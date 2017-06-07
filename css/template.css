@@ -8557,3 +8557,9 @@ a.pswp__share--download:hover{background:#DDD;}
 
 #home-slider .large-centered a.booking-link{display:block;width:180px;margin:auto;font-size:24px;color:#ffffff !important;border:1px solid #ffffff;border-radius:2px;padding:0 10px;margin-top:20px;}
 #home-slider .large-centered a.booking-form-link{display:block;width:180px;margin:auto;font-size:24px;color:#ffffff !important;border:1px solid #ffffff;border-radius:2px;padding:0 10px;margin-top:20px;}
+iframe[name="membership"]{
+	display: none;
+}
+.contact-methods h6{
+	font-size: 0.85em;
+}
