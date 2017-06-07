@@ -1,0 +1,455 @@
+<a id="top-scroll"></a>
+<section class="animate" id="home">
+  <div id="home-slider">
+    <ul class="slides">
+      <li class="has-parallax">
+        <div class="row slide-content">
+          <div class="large-10 large-centered columns text-center">
+            {% if website_data.logo_text == nil or website_data.logo_text == '' %}
+              <a href="{{ '/' | link_to: website_data.link_object }}">
+                {% if website_data.hotel_slug == 'Villagecoconut' %}
+                  <img src="/7/images/village.png" class="logo" />
+                {% else %}
+                  <img src="{{ website_data.logo | attachment_url: 'original' }}"  class="logo"/>
+                {% endif %}
+              </a>
+            {% else %}
+              <a href="{{ '' | link_to: website_data.link_object }}" class="logo">
+                {{website_data.logo_text}}
+              </a>
+            {% endif %}
+            <h1 class="text-white">{{website_data.header_text_1}}</h1>
+            <span class="alt-h text-white">{{website_data.header_text_2}}</span>
+            {% if website_data.booking_link == nil or website_data.booking_link == "" %}
+              <a href="{{ '/book' | link_to: website_data.link_object }}" class="booking-form-link">Book Now</a>
+            {% else %}
+              <a href="{{website_data.booking_link}}" class="booking-link">Book Now</a>
+            {% endif %}
+          </div>
+        </div>
+        <img class="slider-bg" src="{{ website_data.header_image | attachment_url: 'default' }}"/>
+      </li>
+    </ul>
+  </div>
+</section>
+<a id="about-scroll"></a>
+<section class="pad-large" id="about">
+  <div class="row">
+    <div class="large-12 columns">
+      <div>
+        {{website_data.text_area}}
+      </div>
+    </div>
+  </div>
+</section>
+<a id="features-scroll"></a>
+<section id="services">
+  <div id="services-bg" style="background-image: url({{website_data.features_background_image | attachment_url:  'normal' }})"></div>
+  <div class="row pad-large">
+    <div class="large-8 columns">
+      <div class="page-title">
+        <h2 class="lowlight">
+          {{website_data.features_title}}<span class="highlight">.</span>
+        </h2>
+      </div>
+      <p>
+        {{website_data.features_section_description}}
+      </p>
+      <div class="list">
+        {% for feature in website_data.features %}
+          <div class="service">
+            <div class="service-icon">
+              <i class="fa-{{feature.icon}} fa"></i>
+            </div>
+            <div class="service-text">
+              <h6>
+                {{feature.title}}
+              </h6>
+              <p>
+                {{feature.description}}
+              </p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+<a id="rooms-scroll"></a>
+<section class="pad-large" id="work">
+  <div class="row">
+    <div class="large-12 columns text-center">
+      <div class="page-title">
+        <h2 class="lowlight">
+          {{website_data.room_section_title}}<span class="highlight">.</span>
+        </h2>
+        <p>
+          {{website_data.room_section_description}}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="projects-container">
+    {% for room in website_data.rooms %}
+      {% if room.visible == true and room.room_type.photos.size > 0 %}
+        <div class="large-4 project" data-project-file="project1.html">
+          <div class="project-hover">
+            <div class="hover-inner">
+              <h4 class="lowlight">
+                {{ room.name }}
+              </h4>
+            </div>
+          </div>
+          <div class="room-cover" style="background-image: url({{room.room_type.photos.first.image | attachment_url: 'public_big' }})"></div>
+        </div>
+      {% endif %}
+    {% endfor %}
+    {% for room in website_data.custom_rooms %}
+      {% if room.visible == true and room.website_custom_room_photos.size > 0 %}
+        <div class="large-4 project" data-project-file="project1.html">
+          <div class="project-hover">
+            <div class="hover-inner">
+              <h4 class="lowlight">
+                {{room.title}}
+              </h4>
+            </div>
+          </div>
+          <div class="room-cover" style="background-image: url('{{room.website_custom_room_photos.first.image | attachment_url: 'public_big'}}')"></div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <!-- end of projects-container-->
+  <div class="ajax-container">
+    {% for room in website_data.rooms %}
+      {% if room.visible == true and room.room_type.photos.size > 0 %}
+        <div class="room-content">
+          <div class="close-project">
+            <div class="large-12 columns text-center">
+              <div class="icon icon_close_alt2"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="large-12 columns text-center">
+              <div class="page-title">
+                <h2 class="lowlight">
+                  {{room.name}}<span class="highlight">.</span>
+                </h2>
+              </div>
+            </div>
+          </div>
+          <div class="row project-single">
+            <div class="large-8 columns">
+              <div class="project-slider">
+                <ul class="slides">
+                  {% for photo in room.room_type.photos %}
+                    <li>
+                      <img alt="{{room.name}}" src="{{ photo.image | attachment_url: 'public_big' }}"/>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+            <div class="large-4 columns">
+              {{room.description}}
+              <ul class="facilities">
+                {% for facility in room.room_type.facilities %}
+                  <li>
+                    {% if facility.icon %}
+                      <i class="fa-{{facility.icon}} fa"></i>
+                    {% else %}
+                      <i class="fa-circle fa"></i>
+                    {% endif %}
+                    {{ facility.title | get_translation: website_data.id, website_data.lang }}
+                  </li>
+                {% endfor %}
+              </ul>
+              {% if website_data.booking_link == nil or website_data.booking_link == "" %}
+                <a class="booking-form-link" href="#">
+                  <div class="btn send-btn" id="form-button">
+                    Book Now
+                    <div class="icon arrow_right"></div>
+                  </div>
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+    {% for room in website_data.custom_rooms %}
+      {% if room.visible == true and room.website_custom_room_photos.size > 0 %}
+        <div class="room-content">
+          <div class="close-project">
+            <div class="large-12 columns text-center">
+              <div class="icon icon_close_alt2"></div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="large-12 columns text-center">
+              <div class="page-title">
+                <h2 class="lowlight">
+                  {{room.title}}<span class="highlight">.</span>
+                </h2>
+              </div>
+            </div>
+          </div>
+          <div class="row project-single">
+            <div class="large-8 columns">
+              <div class="project-slider">
+                <ul class="slides">
+                  {% for photo in room.website_custom_room_photos %}
+                    <li>
+                      <img alt="{{room.title}}" src="{{photo.image | attachment_url: 'public_big' }}"/>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </div>
+            </div>
+            <div class="large-4 columns">
+              {{room.description}}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  <!-- end of ajax container  -->
+  <div class="row">
+    <div class="large-12 columns pad-top text-center">
+      <div class="page-title">
+        <h2 class="lowlight">
+          Do you
+          <i class="icon icon_heart red"></i>
+          us yet
+          <span class="highlight">?</span>
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- end of Work section -->
+
+{% if website_data.blog_records.size > 0 %}
+  <a href="#" id="blog-scroll"></a>
+  <section id="blog">
+    <div id="blog-bg" style="{{ website_data.images[:blog_cover].first.image | attachment_url: 'public_big'}}"></div>
+    <div class="row pad-large">
+      <div class="large-7 columns push-5">
+        <div class="page-title">
+          <h2 class="lowlight">
+            {{website_data.blog_section_title}}<span class="highlight">.</span>
+          </h2>
+        </div>
+        <p class="lead">
+          {{website_data.blog_section_description}}
+        </p>
+        <ul class="blog-list">
+          {% for record in website_data.blog_records limit: 3 offset: 0 %}
+            <li>
+              <div class="blog-title">
+                <h3>
+                  {{record.title}}
+                </h3>
+                <span>
+                  {{record.created_at | date: "%d.%m.%Y" }}
+                </span>
+                <span class="read-more">
+                  <a href="{{ '/blog/' | append: record.slug | link_to: website_data.link_object }}" class="highlight">Read More</a>
+                </span>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+        <a href="{{ '/blog' | link_to: website_data.link_object }}">
+          <div class="btn">
+            See all posts
+            <div class="icon arrow_right">&nbsp;</div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <!-- end of Services section -->
+  </section>
+{% endif %}
+
+{% if website_data.testimonials.size > 0 %}
+  <section class="pad-large" id="testimonials">
+    <div class="row">
+      <div class="large-12 columns text-center">
+        <div class="page-title">
+          <h2 class="lowlight">
+            What's the buzz
+            {{website_data.linkedin}}
+            <span class="highlight">?</span>
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="testimonials-slider">
+        <ul class="slides">
+          {% for testimonial in website_data.testimonials %}
+            <li>
+              <div class="large-9 large-centered columns text-center">
+                {{testimonial.body}}
+                <span class="quote-author">
+                  {{testimonial.name}}
+                </span>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </section>
+  <!-- end of testimonials section -->
+{% endif %}
+
+<a id="contact-scroll"></a>
+<section class="social-bar">
+  {% if website_data.facebook %}
+
+    <a href="{{ website_data.facebook }}">
+      <div class="large-3 facebook text-center social-link">
+        <div class="icon social_facebook"></div>
+        <div class="link-hover">
+          <h6 class="text-white">Like Us</h6>
+        </div>
+      </div>
+    </a>
+  {% endif %}
+  {% if website_data.twitter %}
+    <a href="{{ website_data.twitter }}">
+      <div class="large-3 twitter text-center social-link">
+        <div class="icon social_twitter"></div>
+        <div class="link-hover">
+          <h6 class="text-white">Follow Us</h6>
+        </div>
+      </div>
+    </a>
+  {% endif %}
+  {% if website_data.instagram %}
+    <a href="{{ website_data.instagram }}">
+      <div class="large-3 linkedin text-center social-link">
+        <div class="icon social_instagram"></div>
+        <div class="link-hover">
+          <h6 class="text-white">Follow Us</h6>
+        </div>
+      </div>
+    </a>
+  {% endif %}
+  {% if website_data.linkedin %}
+    <a href="{{ website_data.linkedin }}">
+      <div class="large-3 linkedin text-center social-link">
+        <div class="icon social_linkedin"></div>
+        <div class="link-hover">
+          <h6 class="text-white">Follow Us</h6>
+        </div>
+      </div>
+    </a>
+  {% endif %}
+  {% if website_data.googleplus %}
+    <a href="{{ website_data.googleplus }}">
+      <div class="large-3 google-plus text-center social-link">
+        <div class="icon social_googleplus"></div>
+        <div class="link-hover">
+          <h6 class="text-white">Plus us</h6>
+        </div>
+      </div>
+    </a>
+  {% endif %}
+  {% if website_data.youtube %}
+    <a href="{{ website_data.youtube }}">
+      <div class="large-3 google-plus text-center social-link">
+        <div class="icon social_youtube"></div>
+        <div class="link-hover">
+          <h6 class="text-white">Follow us</h6>
+        </div>
+      </div>
+    </a>
+  {% endif %}
+</section>
+<section id="contact">
+  <div class="row">
+    <div class="large-5 columns">
+      <h4>
+        <span class="highlight">
+          {{ website_data.contact_area_title.split(' ')[0] }}
+        </span>
+        {{ website_data.contact_area_title.split(' ')[1..website_data.contact_area_title.split(' ').size].join(' ') }}
+      </h4>
+      <ul class="contact-methods">
+        <li>
+          <div class="highlight icon icon icon_pin_alt"></div>
+          <div class="method-text">
+            <h6>
+              {{website_data.address}}
+            </h6>
+          </div>
+        </li>
+        <li>
+          <div class="highlight icon icon icon_mobile"></div>
+          <div class="method-text">
+            <h6>
+              {{website_data.phone_number}}
+            </h6>
+          </div>
+        </li>
+        <li>
+          <div class="highlight icon icon icon_mail_alt"></div>
+          <div class="method-text">
+            <h6>
+              {{website_data.email_address}}
+            </h6>
+            <span>Start the conversation</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div class="large-7 columns">
+      <form action="/send_email" method="post" id="contact-form">
+        <input name="part_a" type="hidden" value="{{website_data.rand_a}}"></input>
+        <input name="part_b" type="hidden" value="{{website_data.rand_b}}"></input>
+        <h4>
+          <span class="highlight">Communicate</span>
+          say hello.
+        </h4>
+        <div class="contact-form">
+          <input class="highlight" id="form-name" name="name" placeholder="Name:" type="text"></input>
+          <input class="highlight" id="form-email" name="email" placeholder="Email:" type="text"></input>
+          <input class="highlight" id="form-msg" name="message" placeholder="Message:" type="text"></input>
+        </div>
+        <input class="highlight" id="form-answer" name="answer" placeholder="{{website_data.rand_a}} + {{website_data.rand_b}} = ..." type="text"></input>
+        <div class="btn send-btn" id="form-button">
+          Send
+          <div class="icon arrow_right">&nbsp;</div>
+        </div>
+        <div class="btn reset-btn">
+          Reset
+          <div class="icon icon_close">&nbsp;</div>
+        </div>
+        <div id="form-sent">
+          <p>Thanks for your enquiry!</p>
+        </div>
+        <div id="details-error">
+          <p>Something whent wrong, try again later</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+<section id="footer">
+  <div class="row">
+    <div class="large-12 columns text-center">
+      <h6>
+        Made with &nbsp;
+        <i class="icon icon_heart red"></i>
+        in
+        <a href="http://thebookingfactory.com">
+          TheBookingFactory
+        </a>
+      </h6>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,32 @@
+<section id="blog">
+  <div id="blog-bg" style="{{ website_data.images[:blog_cover].first.image | attachemnt_url: 'public_big' }}"></div>
+  <div class="row pad-large">
+      <div class="large-7 columns push-5">
+        <div class="page-title">
+          <h2 class="lowlight">
+            {{website_data.blog_section_title}}<span class="highlight">.</span>
+          </h2>
+        </div>
+        <p class="lead">
+          {{website_data.blog_section_description}}
+        </p>
+        <ul class="blog-list">
+          {% for record in website_data.blog_records %}
+            <li>
+              <div class="blog-title">
+                <h3>
+                  {{ record.title }}
+                </h3>
+                <span>
+                  {{ record.created_at | date: '%d.%m.%Y' }}
+                </span>
+                <span class="read-more">
+                  <a href="{{ '/blog/' | append: record.slug | link_to: website_data.link_object}}" class="highlight">Read more</a>
+                </span>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+</section>

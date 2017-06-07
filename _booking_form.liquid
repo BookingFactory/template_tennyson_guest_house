@@ -1,0 +1,42 @@
+
+<div class="booking-form hidden"  style="background-image: url({{website_data.header_image | attachment_url: 'blured' }});">
+  <div class="background"></div>
+  <div class="booking-close">
+    Close
+  </div>
+  <div class="form">
+   <h2>
+     Book Direct, Best Rate Guaranteed
+     <br/>
+     <small>
+       Trouble finding what your looking for? Call us on
+       {{website_data.phone_number}}
+     </small>
+   </h2>
+   <form action="{{ '/book' | link_to: website_data.link_object }}">
+     <div>
+       <div class="field">
+         <label>Check in</label>
+         <input class="date" value="{{ 'now' | date: "%d %b %Y" }}"></input>
+         <input name="dateFrom" type="hidden" value="{{ 'now' | date: "%Y-%m-%d" }}"></input>
+       </div>
+       <div class="field select">
+         <label>Nights</label>
+         <select name="nights">
+           {% for x in (1..20) %}
+             <option value="{{x}}">
+               {{x}}
+             </option>
+           {% endfor %}
+         </select>
+       </div>
+     </div>
+     <div>
+       <div class="field-control">
+         <button class="submit booking-submit">Check Availability</button>
+       </div>
+       <div class="error"></div>
+     </div>
+   </form>
+ </div>
+</div>

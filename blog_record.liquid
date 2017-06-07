@@ -1,0 +1,16 @@
+<section id="blog">
+  <div id="blog-bg" style="{{ website_data.images[:blog_cover].first.image | attachemnt_url: 'public_big' }}"> </div>
+  <div class="row pad-large">
+    <div class="large-7 columns push-5">
+      <div class="page-title">
+        <h2 class="lowlight">
+          {{record.title}}<span class="highlight">.<span>
+        </h2>
+      </div>
+      {{record.text}}
+      {% if website_data.disqus_code %}
+        {{website_data.disqus_code}}
+      {% endif %}
+    </div>
+  </div>
+</section>

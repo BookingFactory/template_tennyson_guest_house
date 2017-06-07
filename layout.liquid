@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      {{website_data.page_title}}
+      {% if record and record.title %}
+        : {{record.title}}
+      {% elsif page and page.title %}
+        : {{page.title}}
+      {% elsif room and room.title %}
+        : {{room.title}}
+      {% endif %}
+    </title>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    {% if record and record.meta_description %}
+      <meta content="{{recrod.meta_description}}" name="description"/>
+    {% elsif page and page.meta_description %}
+      <meta content="{{page.meta_description}}" name="description"/>
+    {% elsif room and room.meta_description %}
+      <meta content="{{room.meta_description}}" name="description" />
+    {% else %}
+      <meta content="{{website_data.page_description}}" name="description" />
+    {% endif %}
+
+    <meta name="engine" content="new" />
+    <meta content="{{website_data.page_keywords}}" name="keywords"/>
+    <meta content="en_UK" property="og:locale"/>
+    <meta content="website" property="og:type"/>
+    <meta content="{{website_data.page_title}}" property="og:title"/>
+    <meta content="{{website_data.page_description}}" property="og:description"/>
+    <meta content="{{website_data.page_title}}" property="og:site_name"/>
+    <link rel="shortcut icon" href="{{ website_data.favicon | attachment_url: 'default' }}" type="image/png" />
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,400italic|Montserrat:400,700|Vollkorn:400italic,400" rel="stylesheet" type="text/css" />
+    <link href="{{ '/css/template.css' | file_url: website_data.template }}" rel="stylesheet" />
+    {% if website_data.brand_color != '' %}
+      <style>
+        .highlight,
+        .booking-form-link,
+        .bookink-link {
+          color: {{website_data.brand_color}};
+        }
+      </style>
+    {% endif %}
+  </head>
+  <body data-base="{{ '' | link_to: website_data.link_object }}">
+    <div id="loader">
+      <div id="progress-bar"></div>
+    </div>
+    <div id="navigation">
+      <div class="row-fluid">
+        <div class="large-2 columns text-center">
+          {% if website_data.logo_text == nil or website_data.logo_text == '' %}
+            <a href="{{ '' | link_to: website_data.link_object}}">
+              <img src="{{ website_data.logo | attachment_url: 'default' }}" class="nav-logo">
+            </a>
+          {% else %}
+            <a href="{{ '' | link_to: website_data.link_object }}" class="logo-text">
+              {{website_data.logo_text}}
+            </a>
+          {% endif %}
+        </div>
+        <div class="right" id="mobile-toggle">
+          <div class="icon icon_menu-square_alt2"></div>
+        </div>
+        <div class="large-10 columns">
+          <ul id="menu">
+            {% for link in website_data.top_links %}
+              {% if link.links.size == 0 %}
+                {% if link.category == 'Predefined Link' %}
+                  {% if link.value == 'home' %}
+                    <li>
+                      <a class="smooth-scroll" href="{{ website_data.smooth_scroll_link  | append: '#home-scroll' }}">
+                        {{link.title}}
+                      </a>
+                    </li>
+                  {% elsif link.value == 'rooms' %}
+                    <li>
+                      <a class="smooth-scroll" href="{{  website_data.smooth_scroll_link  | append: '#rooms-scroll'}}">
+                        {{link.title}}
+                      </a>
+                    </li>
+                  {% elsif link.value == 'features' %}
+                    <li>
+                      <a class="smooth-scroll" href="{{  website_data.smooth_scroll_link  | append: '#features-scroll' }}">
+                        {{link.title}}
+                      </a>
+                    </li>
+                  {% elsif link.value == 'contacts' %}
+                    <li>
+                      <a class="smooth-scroll" href="{{  website_data.smooth_scroll_link  | append: '#contact-scroll' }}">
+                        {{link.title}}
+                      </a>
+                    </li>
+                  {% elsif link.value == 'about' %}
+                    <li>
+                      <a class="smooth-scroll" href="{{  website_data.smooth_scroll_link  | append: '#about-scroll' }}">
+                        {{link.title}}
+                      </a>
+                    </li>
+                  {% elsif link.value == 'blog' %}
+                    <li>
+                      <a class="smooth-scroll" href="{{  website_data.smooth_scroll_link  | append: '#blog-scroll' }}">
+                        {{link.title}}
+                      </a>
+                    </li>
+                  {% elsif link.value == 'terms-and-conditions' %}
+                    <li>
+                      <a href=" {{'/terms-and-conditions' | link_to: website_data.link_object }}">{{link.title}}</a>
+                    </li>
+                  {% elsif link.value == 'privacy-policy' %}
+                    <li>
+                      <a href="{{ '/privacy-policy' | link_to: website_data.link_object }}">{{link.title}}</a>
+                    </li>
+                  {% elsif link.value == 'gallery' %}
+                    <li>
+                      <a href="{{ '/gallery' | link_to: website_data.link_object }}">{{link.title}}</a>
+                    </li>
+                  {% elsif link.value == 'booking' %}
+                    <li>
+                      {% if website_data.booking_link == nil or website_data.booking_link == "" %}
+                        <a href="{{'/book' | link_to: website_data.link_object }}" class="booking-form-link">{{link.title}}</a>
+                      {% else %}
+                        <a href="{{ website_data.booking_link }}" class="booking-link">{{link.title}}</a>
+                      {% endif %}
+                    </li>
+                  {% endif %}
+                {% elsif link.category == 'Custom Page Link' %}
+                  <li>
+                    <a href="{{ link.value | link_to: website_data.link_object }}">{{link.title}}</a>
+                  </li>
+                {% elsif link.category == 'Blog Record Link' %}
+                  <li>
+                    <a href="{{ '/blog/' | append: link.value | link_to: website_data.link_object}}">{{link.title}}</a>
+                  </li>
+                {% elsif link.category == 'Room Page Link' %}
+                  <li>
+                    <a href="{{ link.value | link_to: website_data.link_object }}">{{link.title}}</a>
+                  </li>
+                {% else %}
+                  <li>
+                    <a href="{{ link.value | website_data.link_object }}">{{link.title}}</a>
+                  </li>
+                {% endif %}
+              {% else %}
+                <li class="dropdown">
+                  <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                    {{link.title}}
+                    <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu" role="menu">
+                    {% for link in link.links %}
+                      {% if link.category == 'Predefined Link' %}
+                        {% if link.value == 'home' %}
+                          <li>
+                            <a href="{{ '' | link_to: website_data.link_object }}">{{link.title}}</a>
+                          </li>
+                        {% elsif link.value == 'rooms' %}
+                          <li class="dropdown">
+                            <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                              {{link.title}}
+                              <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                              {% for room in website_data.rooms %}
+                                {% if room.visible == true %}
+                                  <li>
+                                    <a href="{{ room.slug | link_to: website_data.link_object }}">{{room.name}}</a>
+                                  </li>
+                                {% endif %}
+                              {% endfor %}
+                              {% for room in website_data.custom_rooms %}
+                                {% if room.visible == true %}
+                                  <li>
+                                    <a href="{{ room.slug | link_to: website_data.link_object }}">{{room.title}}</a>
+                                  </li>
+                                {% endif %}
+                              {% endfor %}
+                            </ul>
+                          </li>
+                        {% elsif link.value == 'featues' %}
+                          <li>
+                            <a href="{{ '#features' | link_to: website_data.link_object }}">{{link.title}}</a>
+                          </li>
+                        {% elsif link.value == 'contacts' %}
+                          <li>
+                            <a href=" {{'#contact' | link_to: website_data.link_object}} ">{{link.title}}</a>
+                          </li>
+                        {% elsif  link.value == 'faq' %}
+                          <li>
+                            <a href="{{ '#faq' | link_to: website_data.link_object }}">{{link.title}}</a>
+                          </li>
+                        {% elsif link.value == 'about' %}
+                          <li>
+                            <a href="{{ '/about' | link_to: website_data.link_object }}">{{link.title}}</a>
+                          </li>
+                        {% elsif link.value == 'blog' %}
+                          <li>
+                            <a href="{{ '/blog' | link_to: website_data.link_object }}">{{link.title}}</a>
+                          </li>
+                        {% elsif link.value == 'terms-and-conditions' %}
+                          <li>
+                            <a href="{{ '/terms-and-conditions' | link_to: website_data.link_object" >{{link.title}}</a>
+                          </li>
+                        {% elsif link.value == 'privacy-policy' %}
+                          <li>
+                            <a href="{{'/privacy-policy' | link_to: website_data.link_object}}">{{link.title}}</a>
+                          </li>
+                        {% elsif link.value == 'gallery' %}
+                          <li>
+                            <a href="{{ '/gallery' | link_to: website_data.link_object }}">{{link.title}}</a>
+                          </li>
+                        {% elsif link.value == 'booling' %}
+                          <li>
+                            {% if website_data.booking_link == nil or website_data.booking_link == "" %}
+                              <a href="{{ '/book' | link_to: website_data.link_object }}" class="booking-form-link">{{link.title}}</a>
+                            {% else %}
+                              <a href="{{ website_data.booking_link }}" class="booking-link">{{link.title}}</a>
+                            {% endif %}
+                          </li>
+                        {% endif %}
+                      {% elsif link.category == 'Custom Page Link' %}
+                        <li>
+                          <a href="{{ link.value | link_to: website_data.link_object}} ">{{link.title}}</a>
+                        </li>
+                      {% elsif link.category == 'Blog Record Link' %}
+                        <li>
+                          <a href="{{ '/blog/' | append: link.value  | link_to: website_data.link_object }}">{{link.title}}</a>
+                        </li>
+                      {%  elsif link.category == 'Room Page Link' %}
+                        <li>
+                          <a href="{{ link.value | link_to: website_data.link_object }}">{{link.title}}</a>
+                        </li>
+                      {% else %}
+                        <li>
+                          <a href="{{ link.value | link_to: website_data.link_object }}">{{link.title}}</a>
+                        </li>
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+                </li>
+              {% endif %}
+            {% endfor %}
+            {% if website_data.langs.size > 1 %}
+              <li class="dropdown languages">
+                <a href="#">
+                  <span class="flag-icon flag-icon-{{website_data.lang}}"></span>
+                    {{ website_data.lang | get_native_title }}
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                  {% for lang in website_data.langs %}
+                    <li>
+                      <a href="{{ '/' | append: lang | link_to: website_data.link_object }}" title="Choose language">
+                        <span class="flag-icon flag-icon-{{lang}}"></span>
+                        {{ lang | get_native_title }}
+                      </a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              </li>
+            {% endif %}
+            <li class="logout">
+              <a href="#">
+                Logout
+              </a>
+            </li>
+            <li>
+              {% if website_data.booking_link == nil or website_data.booking_link == "" %}
+                <a href="{{'/book' | link_to: website_data.link_object}}" class="booking-form-link">Book Now</a>
+              {% else %}
+                <a href="{{website_data.booking_link}}" class="bookink-link">Book Now</a>
+              {% endif %}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="main-container">
+      {{content}}
+    </div>
+    {% include 'booking_form' %}
+    <script src="{{ '/js/template.js' | file_url: website_data.template }}"></script>
+    {{website_data.ga_code}}
+  </body>
+</html>
