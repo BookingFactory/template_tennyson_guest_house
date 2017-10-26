@@ -1,6 +1,6 @@
 <section id="blog">
-  {% if page.website_page_photos %}
-    <div id="blog-bg" style="background-image: url({{ page.website_page_photos.first.photo | attachment_url: 'public_big' }})"></div>
+  {% if page.website_page_photos.size > 0 %}
+    <div id="blog-bg" attr-test="website_photo" style="background-image: url({{ page.website_page_photos.first.photo | attachment_url: 'public_big' }})"></div>
   {% else %}
     <div id="blog-bg" style="background-image: url( {{website_data.images[:blog_cover].first.image | attachment_url: 'public_big' }} )" ></div>
   {% endif %}
